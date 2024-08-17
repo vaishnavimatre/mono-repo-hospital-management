@@ -1,0 +1,64 @@
+name: base images build
+
+on:
+  push:
+    paths: dev-sec-ops/base-images/**
+      
+jobs:
+  build_license_finder_base_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKER_REGISTRY_USER }}/license-finder:latest -f dev-sec-ops/base-images/license-finder-dockerfile .
+
+      - name: login in to docker registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USER }}
+          password: ${{ secrets.DOCKER_REGISTRY_PAT }}
+
+      - name: push docker image
+        run: docker push ${{ secrets.DOCKER_REGISTRY_USER }}/license-finder:latest 
+
+
+  build_gitleaks_base_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKER_REGISTRY_USER }}/gitleaks:latest -f dev-sec-ops/base-images/gitleaks-dockerfile .
+
+      - name: login in to docker registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USER }}
+          password: ${{ secrets.DOCKER_REGISTRY_PAT }}
+
+      - name: push docker image
+        run: docker push ${{ secrets.DOCKER_REGISTRY_USER }}/gitleaks:latest 
+
+  build-openjdk-24-jdk-slim_base_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKER_REGISTRY_USER }}/openjdk-24-jdk-slim:latest -f dev-sec-ops/base-images/openjdk-24-jdk-slim-dockerfile .
+
+      - name: login in to docker registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USER }}
+          password: ${{ secrets.DOCKER_REGISTRY_PAT }}
+
+      - name: push docker image
+        run: docker push ${{ secrets.DOCKER_REGISTRY_USER }}/openjdk-24-jdk-slim:latest 

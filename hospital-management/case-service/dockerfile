@@ -1,0 +1,11 @@
+# Use a base image with OpenJDK 24
+FROM vaish864/openjdk-24-jdk-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the application JAR file
+COPY . /app
+
+# Start the application
+CMD ["java", "-jar", "/app/case-service.jar"]
